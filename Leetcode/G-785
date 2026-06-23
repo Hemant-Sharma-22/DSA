@@ -1,0 +1,46 @@
+import java.util.*;
+
+class Solution {
+
+    boolean bfs(int start, int[][] edges, int[] color) {
+
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        color[start] = 0;
+
+        while (!q.isEmpty()) {
+
+            int node = q.poll();
+
+            for (int nei : edges[node]) {
+
+                if (color[nei] == -1) {
+                    color[nei] = 1 - color[node];
+                    q.offer(nei);
+                }
+                else if (color[nei] == color[node]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public boolean isBipartite(int V, int[][] edges) {
+
+        int[] color = new int[V];
+        Arrays.fill(color, -1);
+
+        for (int i = 0; i < V; i++) {
+
+            if (color[i] == -1) {
+
+                if (!bfs(i, edges, color))
+                    return false;
+            }
+        }
+
+        return true;
+    }
+}
