@@ -1,5 +1,4 @@
-import java.util.*;
-
+// Bipartite
 class Solution {
 
     boolean bfs(int start, int[][] edges, int[] color) {
