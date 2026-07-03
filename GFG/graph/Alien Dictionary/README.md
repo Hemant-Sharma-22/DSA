@@ -1,42 +1,37 @@
-````markdown
 # Alien Dictionary
 
-## Problem Description
+## Problem Statement
 
-A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of words `words[]` from the alien language's dictionary, where the words are sorted lexicographically according to the alien language.
+A new alien language uses the English alphabet, but the order of its letters is unknown. You are given a list of words sorted lexicographically according to the alien language.
 
-Your task is to determine a valid order of the unique letters in this language. If multiple valid orders exist, return any one of them.
+Determine a valid ordering of the unique characters. If multiple valid orderings exist, return any one of them.
 
-If the given dictionary is inconsistent and no valid ordering exists, return an empty string (`""`).
-
-> **Note:** The returned order is validated by the driver code. Any correct ordering is accepted.
+If the given dictionary is inconsistent and no valid ordering exists, return an empty string.
 
 ---
 
-## Examples
+## Example
 
-### Example 1
-
-**Input**
+### Input
 
 ```text
-words[] = ["baa", "abcd", "abca", "cab", "cad"]
+words = ["baa", "abcd", "abca", "cab", "cad"]
 ```
 
-**Output**
+### Output
 
 ```text
 "bdac"
 ```
 
-**Explanation**
+### Explanation
 
-- `"baa"` → `"abcd"` ⇒ `b` comes before `a`
-- `"abcd"` → `"abca"` ⇒ `d` comes before `a`
-- `"abca"` → `"cab"` ⇒ `a` comes before `c`
-- `"cab"` → `"cad"` ⇒ `b` comes before `d`
+* `b` comes before `a`
+* `d` comes before `a`
+* `a` comes before `c`
+* `b` comes before `d`
 
-One valid ordering is:
+One valid character ordering is:
 
 ```text
 b → d → a → c
@@ -44,56 +39,59 @@ b → d → a → c
 
 ---
 
-### Example 2
+## Approach
 
-**Input**
+Treat each unique character as a node in a directed graph.
 
-```text
-words[] = ["caa", "aaa", "aab"]
-```
+By comparing every pair of adjacent words, find the first differing character. This difference establishes a directed edge indicating the order between the two characters.
 
-**Output**
+Once the graph is constructed:
 
-```text
-"cab"
-```
-
-**Explanation**
-
-- `"caa"` → `"aaa"` ⇒ `c` comes before `a`
-- `"aaa"` → `"aab"` ⇒ `a` comes before `b`
-
-One valid ordering is:
-
-```text
-c → a → b
-```
+1. Compute the indegree of every character.
+2. Perform **Topological Sorting (Kahn's Algorithm)**.
+3. Build the character ordering while processing nodes with zero indegree.
+4. If all characters are processed, return the ordering.
+5. Otherwise, a cycle exists, so return an empty string.
 
 ---
 
-### Example 3
+## Algorithm
 
-**Input**
-
-```text
-words[] = ["ab", "cd", "ef", "ad"]
-```
-
-**Output**
-
-```text
-""
-```
-
-**Explanation**
-
-No valid ordering exists because the inferred character relationships create a contradiction.
+1. Create a graph containing all unique characters.
+2. Compare each pair of adjacent words.
+3. Add a directed edge from the first differing character of the first word to that of the second word.
+4. Calculate the indegree of every character.
+5. Apply Topological Sort using a queue.
+6. If the resulting ordering contains all unique characters, return it.
+7. Otherwise, return an empty string.
 
 ---
 
-## Constraints
+## Complexity Analysis
 
-- `1 ≤ words.length ≤ 500`
-- `1 ≤ words[i].length ≤ 100`
-- `words[i]` consists only of lowercase English letters.
-````
+* **Time Complexity:** `O(N × L + K)`
+
+  * `N` = Number of words
+  * `L` = Average length of a word
+  * `K` = Number of unique characters
+* **Space Complexity:** `O(K + E)`
+
+  * `E` = Number of precedence relationships (edges)
+
+---
+
+## Key Concepts
+
+* Graph
+* Directed Graph
+* Topological Sort
+* Kahn's Algorithm
+* BFS
+* Indegree
+* Lexicographical Ordering
+
+---
+
+## Tags
+
+`Graph` `Topological Sort` `BFS` `Kahn's Algorithm` `Directed Graph`
