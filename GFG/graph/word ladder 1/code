@@ -1,0 +1,46 @@
+class Pair{
+    String word;
+    int step;
+    
+    Pair(String word, int step){
+        this.word= word;
+        this.step= step;
+    }
+}
+
+class Solution {
+    public int wordLadder(String[] words, String s, String e) {
+        // code here
+        Queue<Pair> q= new LinkedList<>();
+        Set<String> set= new HashSet<>();
+        q.offer(new Pair(s,1));
+        int n= words.length;
+        for(int i=0; i<n; i++){
+            set.add(words[i]);
+        }
+        
+        while(!q.isEmpty()){
+            Pair curr= q.poll();
+            String last_word= curr.word;
+            int cnt= curr.step;
+            
+            //q.remove();
+            if(last_word.equals(e)) return cnt;
+            
+            for(int i=0; i<last_word.length(); i++){
+                for(char ch= 'a'; ch<='z'; ch++){
+                    char [] replaced_Word= last_word.toCharArray();
+                    
+                    replaced_Word[i]=ch;        // char is changing 'a' -> 'z';
+                    String replaced_str= new String(replaced_Word);
+                    
+                    if(set.contains(replaced_str)) {
+                        set.remove(replaced_str);
+                        q.offer(new Pair(replaced_str, cnt+1));
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+}
